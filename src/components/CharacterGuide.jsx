@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, RotateCcw, X, Sparkles, ChevronRight, MessageSquare, Bot } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Sparkles, ChevronRight } from 'lucide-react';
 
 export const STORY_CHAPTERS = [
   {
@@ -67,11 +67,10 @@ export const STORY_CHAPTERS = [
   }
 ];
 
-export default function CharacterGuide({ currentChapterIndex, onChapterSelect, isAudioEnabled, setIsAudioEnabled, onRequestRegister }) {
+export default function CharacterGuide({ currentChapterIndex, onChapterSelect, onRequestRegister }) {
   const [isBubbleOpen, setIsBubbleOpen] = useState(true);
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const speechSynthRef = useRef(null);
 
   const currentChapter = STORY_CHAPTERS[currentChapterIndex] || STORY_CHAPTERS[0];
 
@@ -95,38 +94,6 @@ export default function CharacterGuide({ currentChapterIndex, onChapterSelect, i
     return () => clearInterval(interval);
   }, [currentChapterIndex]);
 
-  // Web Speech API Voice synthesis effect
-  useEffect(() => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel(); // Stop prior speech
-
-      if (isAudioEnabled && currentChapter?.dialogue) {
-        const utterance = new SpeechSynthesisUtterance(currentChapter.dialogue);
-        utterance.rate = 1.05;
-        utterance.pitch = 1.1;
-        
-        // Select a good English voice if available
-        const voices = (window.speechSynthesis && window.speechSynthesis.getVoices) ? window.speechSynthesis.getVoices() : [];
-        const preferredVoice = Array.isArray(voices) ? voices.find(v => v && v.lang && v.lang.includes('en') && v.name && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'))) : null;
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-
-        window.speechSynthesis.speak(utterance);
-      }
-    }
-  }, [currentChapterIndex, isAudioEnabled]);
-
-  const speakCurrentText = () => {
-    if ('speechSynthesis' in window && currentChapter?.dialogue) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(currentChapter.dialogue);
-      utterance.rate = 1.05;
-      utterance.pitch = 1.1;
-      window.speechSynthesis.speak(utterance);
-    }
-  };
-
   return (
     <div className="character-hud-container" data-testid="character-hud">
       {/* Speech Bubble Box */}
@@ -135,22 +102,6 @@ export default function CharacterGuide({ currentChapterIndex, onChapterSelect, i
           <div className="speech-bubble-header">
             <span className="chapter-badge">{currentChapter.title}</span>
             <div className="speech-controls">
-              <button 
-                className="speech-btn" 
-                onClick={speakCurrentText} 
-                title="Replay Voice Narration"
-                data-testid="replay-voice-btn"
-              >
-                <RotateCcw size={14} />
-              </button>
-              <button 
-                className="speech-btn" 
-                onClick={() => setIsAudioEnabled(!isAudioEnabled)} 
-                title={isAudioEnabled ? "Mute Voice" : "Enable Voice"}
-                data-testid="mute-toggle-btn"
-              >
-                {isAudioEnabled ? <Volume2 size={14} className="text-emerald-bright" /> : <VolumeX size={14} />}
-              </button>
               <button 
                 className="speech-btn" 
                 onClick={() => setIsBubbleOpen(false)} 

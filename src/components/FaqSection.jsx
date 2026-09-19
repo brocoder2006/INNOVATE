@@ -28,15 +28,11 @@ export const FAQS = [
   }
 ];
 
-export default function FaqSection({ onFaqClick }) {
+export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFaq = (idx) => {
-    const newIdx = openIndex === idx ? null : idx;
-    setOpenIndex(newIdx);
-    if (newIdx !== null && onFaqClick) {
-      onFaqClick(FAQS[newIdx]);
-    }
+    setOpenIndex(openIndex === idx ? null : idx);
   };
 
   return (

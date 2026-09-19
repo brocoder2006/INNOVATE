@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, CalendarDays, MapPin, Users, ArrowUpRight, Trophy, Zap, ShieldCheck } from 'lucide-react';
+import { Sparkles, CalendarDays, MapPin, Users, ArrowUpRight, Trophy, Zap, ShieldCheck, Leaf } from 'lucide-react';
 
 const heroImage = "/Users/apple/.gemini/antigravity-ide/brain/fad1b7fc-1c06-4543-acd0-df61281e7520/innovate_hero_bg_1789818257536.jpg";
 
@@ -35,9 +35,9 @@ export default function HeroSection({ onRequestRegister }) {
 
       <div className="container hero-content">
         <div className="pin-tag" data-testid="hero-announcement" style={{ marginBottom: '20px' }}>
-          <Sparkles size={16} /> 
-          INNOVATE 2026 · FLAGSHIP ECO-TECH & AI HACKATHON
-          <Sparkles size={16} />
+          <Leaf size={16} className="text-lime-bright" /> 
+          INNOVATE 2026 · GREENOVATION CLUB MSIT FLAGSHIP HACKATHON
+          <Leaf size={16} className="text-lime-bright" />
         </div>
 
         <div className="hero-glass-pill" style={{ marginBottom: '16px' }}>

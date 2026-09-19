@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Shield, Sparkles, Volume2, VolumeX, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Shield, Sparkles, Menu, X, ArrowUpRight } from 'lucide-react';
 
-export default function Navbar({ activeSection, isAudioEnabled, setIsAudioEnabled, onRequestRegister }) {
+export default function Navbar({ activeSection, onRequestRegister }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -40,17 +40,6 @@ export default function Navbar({ activeSection, isAudioEnabled, setIsAudioEnable
       </div>
 
       <div className="nav-actions">
-        {/* Voice Narration Audio Toggle */}
-        <button 
-          className={`audio-toggle-btn ${isAudioEnabled ? 'active' : ''}`}
-          onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-          title="Toggle Cyber Guide Audio Narration"
-          data-testid="audio-narration-toggle"
-        >
-          {isAudioEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-          <span>{isAudioEnabled ? 'Voice: ON' : 'Voice: OFF'}</span>
-        </button>
-
         <button 
           onClick={onRequestRegister}
           className="btn-3d-green"

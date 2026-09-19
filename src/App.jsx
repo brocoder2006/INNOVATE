@@ -3,8 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Navbar from './components/Navbar.jsx';
-import CharacterGuide, { STORY_CHAPTERS } from './components/CharacterGuide.jsx';
-import Character3DCanvas from './components/Character3D.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import StorySection from './components/StorySection.jsx';
 import TracksSection from './components/TracksSection.jsx';
@@ -20,20 +18,18 @@ import TrackDetailModal from './components/TrackDetailModal.jsx';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
-  const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
-  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
   const mainRef = useRef(null);
 
-  // Setup GSAP ScrollTrigger for chapter tracking & text reveals
+  // Setup GSAP ScrollTrigger for active section tracking & text reveals
   useEffect(() => {
     const chapterIds = ['hero', 'story', 'tracks', 'timeline', 'treasury', 'guild', 'sanctum', 'scrolls', 'cta'];
     const triggers = [];
 
-    chapterIds.forEach((id, index) => {
+    chapterIds.forEach((id) => {
       const element = document.getElementById(id);
       if (element) {
         const trigger = ScrollTrigger.create({
@@ -41,11 +37,9 @@ export default function App() {
           start: 'top 60%',
           end: 'bottom 60%',
           onEnter: () => {
-            setCurrentChapterIndex(index);
             setActiveSectionId(id);
           },
           onEnterBack: () => {
-            setCurrentChapterIndex(index);
             setActiveSectionId(id);
           }
         });
@@ -124,35 +118,11 @@ export default function App() {
     };
   }, []);
 
-  const handleFaqClick = (faqItem) => {
-    // Custom FAQ voice response
-    if (isAudioEnabled && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(`${faqItem.q}. ${faqItem.a}`);
-      utterance.rate = 1.05;
-      window.speechSynthesis.speak(utterance);
-    }
-  };
-
   return (
     <div className="site-shell" ref={mainRef} data-testid="innovate-homepage">
       {/* Navigation Header */}
       <Navbar 
         activeSection={activeSectionId}
-        isAudioEnabled={isAudioEnabled}
-        setIsAudioEnabled={setIsAudioEnabled}
-        onRequestRegister={() => setIsRegisterOpen(true)}
-      />
-
-      {/* 3D WebGL Storytelling Character (nvg8.io style) */}
-      <Character3DCanvas chapterIndex={currentChapterIndex} />
-
-      {/* Floating Cyber Mascot Avatar & Speech Engine */}
-      <CharacterGuide 
-        currentChapterIndex={currentChapterIndex}
-        onChapterSelect={(idx) => setCurrentChapterIndex(idx)}
-        isAudioEnabled={isAudioEnabled}
-        setIsAudioEnabled={setIsAudioEnabled}
         onRequestRegister={() => setIsRegisterOpen(true)}
       />
 
@@ -176,9 +146,7 @@ export default function App() {
 
         <SanctumSection />
 
-        <FaqSection 
-          onFaqClick={handleFaqClick} 
-        />
+        <FaqSection />
 
         <Footer 
           onRequestRegister={() => setIsRegisterOpen(true)} 
