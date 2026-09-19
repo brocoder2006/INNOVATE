@@ -162,8 +162,8 @@ function BucketHatNavigatorModel({ chapterIndex, scrollProgress }) {
 
     // Subtle head glance mouse tracking
     if (headRef.current) {
-      const mouseX = (state.pointer.x * Math.PI) / 10;
-      const mouseY = (state.pointer.y * Math.PI) / 12;
+      const mouseX = ((state?.pointer?.x || 0) * Math.PI) / 10;
+      const mouseY = ((state?.pointer?.y || 0) * Math.PI) / 12;
       headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, mouseX - 0.3, delta * 4);
       headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, -mouseY, delta * 4);
     }

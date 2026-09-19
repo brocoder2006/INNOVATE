@@ -106,8 +106,8 @@ export default function CharacterGuide({ currentChapterIndex, onChapterSelect, i
         utterance.pitch = 1.1;
         
         // Select a good English voice if available
-        const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha')));
+        const voices = (window.speechSynthesis && window.speechSynthesis.getVoices) ? window.speechSynthesis.getVoices() : [];
+        const preferredVoice = Array.isArray(voices) ? voices.find(v => v && v.lang && v.lang.includes('en') && v.name && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'))) : null;
         if (preferredVoice) {
           utterance.voice = preferredVoice;
         }
